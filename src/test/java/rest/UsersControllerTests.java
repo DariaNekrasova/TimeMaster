@@ -4,8 +4,9 @@ import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.response.Response;
 import com.sidenis.timemaster.common.rest.UsersController;
 import net.minidev.json.JSONObject;
-import org.junit.*;
-import java.util.Date;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.util.Map;
 
@@ -57,6 +58,7 @@ public class UsersControllerTests extends UsersController {
     public void getUsersByIDTest() {
 
         resp = getUsersByID(cookies, 1);
+
         assertTrue("Some error in getting users by ID. Status - " + resp.statusLine(), !resp.body().as(JSONObject.class).get("id").equals("1"));
     }
 
@@ -64,9 +66,10 @@ public class UsersControllerTests extends UsersController {
     public void patchUsersByIDTest(){
         String data = "123";
 
-        resp = patchUsersByID(cookies,ID, data);
-        assertTrue("Error! " + data + " != " + resp.as(JSONObject.class).getAsString("email")
-                ,resp.as(JSONObject.class).getAsString("email").equals("test@test.test" +  data));
+       // resp = patchUsersByID(cookies,ID, data);
+        resp = putUsersByID(cookies, ID, "123");
+        assertTrue("Error! " + data + " != " + resp.as(JSONObject.class).get("email")
+                ,resp.as(JSONObject.class).get("email").equals("test@test.test" +  data));
     }
 
   //  @Test

@@ -1,9 +1,10 @@
 package com.sidenis.timemaster.common.rest;
 
+
+
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
 import com.jayway.restassured.specification.RequestSpecification;
-import com.sidenis.timemaster.common.annotation.BaseTimeMasterTest;
 import net.minidev.json.JSONObject;
 
 import java.util.Map;
@@ -14,6 +15,7 @@ import static com.jayway.restassured.RestAssured.given;
 public class ExtraController extends TimeMasterController {
 
     protected final static RequestSpecification rs = given().basePath("/api/").contentType(ContentType.JSON);
+
 
     public Response getDayCodesCurrent(Map<String, String> cookies) {
         return rs
@@ -53,7 +55,9 @@ public class ExtraController extends TimeMasterController {
         System.out.println(URL);
         System.out.println("{\"user_ids\":[\"163\"]}");
 
-        return given().baseUri(URL).contentType(ContentType.JSON)
+        return given()
+                .header("x-CSRFToken", cookies.get("csrftoken"))
+                .baseUri(URL).contentType(ContentType.JSON)
                 .cookies(cookies)
                 .body(body)
                 .when()
@@ -124,8 +128,9 @@ public class ExtraController extends TimeMasterController {
 
 
         return given().contentType(ContentType.JSON)
+                .header("x-CSRFToken", cookies.get("csrftoken"))
                 .cookies(cookies)
-                .baseUri("http://timemaster-dev2.sidenis.io/api/time_sheet/RU/test_time_sheet/" )
+                .baseUri("http://timemaster-dev2.sidenis.io/api/time_sheet/"+ country +"/"+time_sheet_name+"/" )
                 .body(requestBody)
                 .when()
                 .post()

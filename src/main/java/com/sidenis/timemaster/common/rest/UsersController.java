@@ -8,7 +8,6 @@ import net.minidev.json.JSONObject;
 import java.util.Map;
 
 import static com.jayway.restassured.RestAssured.given;
-import static com.jayway.restassured.RestAssured.requestSpecification;
 
 //Daria
 public class UsersController extends TimeMasterController {
@@ -63,13 +62,14 @@ public class UsersController extends TimeMasterController {
 
         return given().baseUri("http://timemaster-dev2.sidenis.io/api/users/" + ID)
                 .contentType(ContentType.JSON)
-                .cookie(cookies.get("csrftoken"))
+                .header("X-CSRFToken",cookies.get("csrftoken") )
+                .cookies(cookies)
                 .when()
                 .body(request)
                 .put()
                 .then()
                 .statusCode(200)
-                .log().all()
+               // .log().all()
                 .extract().response();
     }
 
@@ -82,9 +82,10 @@ public class UsersController extends TimeMasterController {
         request.put("email", str);
 
 
-        return given().baseUri("http://timemaster-dev2.sidenis.io/api/users/" + ID)
+        return given().baseUri("http://timemaster-dev2.sidenis.io/api/users/" + ID + "/")
                 .contentType(ContentType.JSON)
-                .cookie(cookies.get("csrftoken"))
+                .header("X-CSRFToken",cookies.get("csrftoken") )
+                .cookies(cookies)
                 .when()
                 .body(request)
                 .put()
