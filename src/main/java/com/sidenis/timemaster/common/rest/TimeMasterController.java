@@ -21,7 +21,8 @@ public class TimeMasterController extends BaseTimeMasterTest {
     public static String logout(Map<String, String> cookies){
         System.out.println("---------------------------------------------->LOGOUT<-----------------------------------------------------------");
         return given()
-                .cookie(cookies.get("csrftoken"))
+                .header("X-CSRFToken", cookies.get("csrftoken"))
+                .cookies(cookies)
                 .when()
                 .post("api/logout/")
                 .then()
